@@ -11,6 +11,12 @@ st.title("📈 Prediksi Harga Crypto (Data Binance/Tokocrypto)")
 @st.cache_data
 def get_data():
     url = "https://api.binance.com/api/v3/klines"
+    df = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_1HOUR, "5 days ago UTC")
+
+if df is None or len(df) < 10:
+    st.error("Gagal mengambil data dari Binance atau data terlalu sedikit.")
+    st.stop()
+
     params = {"symbol": "BTCUSDT", "interval": "1h", "limit": 500}
     response = requests.get(url, params=params)
     data = response.json()
